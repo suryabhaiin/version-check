@@ -1,13 +1,13 @@
-class SNNotification {
+class SBNotification {
     static init() {
-        if (!document.querySelector("#sn-notification-wrapper")) {
+        if (!document.querySelector("#sb-notification-wrapper")) {
             const wrapper = document.createElement("div");
-            wrapper.id = "sn-notification-wrapper";
+            wrapper.id = "sb-notification-wrapper";
             document.body.appendChild(wrapper);
             this.shadowRoot = wrapper.attachShadow({ mode: "open" });
 
             const container = document.createElement("div");
-            container.id = "sn-notification-container";
+            container.id = "sb-notification-container";
             this.shadowRoot.appendChild(container);
 
             this.injectStyles();
@@ -15,29 +15,29 @@ class SNNotification {
     }
 
     static show(message, duration = 5, position = "top-right") {
-        const container = this.shadowRoot.querySelector("#sn-notification-container");
-        container.className = `sn-notification-container ${position}`;
+        const container = this.shadowRoot.querySelector("#sb-notification-container");
+        container.className = `sb-notification-container ${position}`;
 
         const notification = document.createElement("div");
-        notification.classList.add("sn-notification", "show");
+        notification.classList.add("sb-notification", "show");
 
         notification.innerHTML = `
-            <span class="sn-time-counter">${duration}</span>
-            <span class="sn-text">${message}</span>
-            <div class="sn-progress-bar" style="transition: width ${duration}s linear"></div>
+            <span class="sb-time-counter">${duration}</span>
+            <span class="sb-text">${message}</span>
+            <div class="sb-progress-bar" style="transition: width ${duration}s linear"></div>
         `;
 
         container.prepend(notification);
-        setTimeout(() => notification.querySelector(".sn-progress-bar").style.width = "0%", 10);
+        setTimeout(() => notification.querySelector(".sb-progress-bar").style.width = "0%", 10);
 
         let timeLeft = duration;
         const countdown = setInterval(() => {
             timeLeft -= 1;
-            notification.querySelector(".sn-time-counter").textContent = timeLeft;
+            notification.querySelector(".sb-time-counter").textContent = timeLeft;
             if (timeLeft <= 0) clearInterval(countdown);
         }, 1000);
 
-        setTimeout(() => SNNotification.remove(notification), duration * 1000);
+        setTimeout(() => SBNotification.remove(notification), duration * 1000);
     }
 
     static remove(notification) {
@@ -52,12 +52,12 @@ class SNNotification {
         const style = document.createElement("style");
         style.textContent = `
             :host {
-                --sn-bg-color: #f4f4f4;
-                --sn-text-color: #000;
-                --sn-notification-bg: linear-gradient(135deg, #ff7eb3, #ff758c);
-                --sn-progress-bg: rgba(255, 255, 255, 0.5);
+                --sb-bg-color: #f4f4f4;
+                --sb-text-color: #000;
+                --sb-notification-bg: linear-gradient(135deg, #ff7eb3, #ff758c);
+                --sb-progress-bg: rgba(255, 255, 255, 0.5);
             }
-            #sn-notification-container {
+            #sb-notification-container {
                 position: fixed;
                 z-index: 9999;
                 display: flex;
@@ -65,12 +65,12 @@ class SNNotification {
                 gap: 10px;
                 padding: 10px;
             }
-            .sn-notification-container.top-right { top: 20px; right: 20px; }
-            .sn-notification-container.top-left { top: 20px; left: 20px; }
-            .sn-notification-container.bottom-right { bottom: 20px; right: 20px; }
-            .sn-notification-container.bottom-left { bottom: 20px; left: 20px; }
-            .sn-notification {
-                background: var(--sn-notification-bg);
+            .sb-notification-container.top-right { top: 20px; right: 20px; }
+            .sb-notification-container.top-left { top: 20px; left: 20px; }
+            .sb-notification-container.bottom-right { bottom: 20px; right: 20px; }
+            .sb-notification-container.bottom-left { bottom: 20px; left: 20px; }
+            .sb-notification {
+                background: var(--sb-notification-bg);
                 color: white;
                 padding: 12px;
                 border-radius: 8px;
@@ -86,10 +86,10 @@ class SNNotification {
                 width: 300px;
                 min-height: 50px;
             }
-            .sn-notification.show {
+            .sb-notification.show {
                 transform: translateX(0);
             }
-            .sn-time-counter {
+            .sb-time-counter {
                 font-size: 14px;
                 font-weight: bold;
                 color: white;
@@ -103,16 +103,16 @@ class SNNotification {
                 flex-shrink: 0;
                 margin-right: 10px;
             }
-            .sn-progress-bar {
+            .sb-progress-bar {
                 position: absolute;
                 bottom: 0;
                 left: 0;
                 height: 4px;
-                background: var(--sn-progress-bg);
+                background: var(--sb-progress-bg);
                 width: 100%;
                 transition: width linear;
             }
-            .sn-text {
+            .sb-text {
                 flex-grow: 1;
             }
         `;
@@ -120,4 +120,4 @@ class SNNotification {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => SNNotification.init());
+document.addEventListener("DOMContentLoaded", () => SBNotification.init());
